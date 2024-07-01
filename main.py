@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.responses import HTMLResponse
 from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
@@ -6,11 +6,12 @@ from routers.UserDestinos import destinos_router
 from routers.UserPaquetes import paquetes_router
 from routers.UserReservas import reservas_router
 from routers.UserUsuarios import usuarios_router
-from routers.User import user_router
+from routers.User import userauth_router
 from fastapi.middleware.cors import CORSMiddleware
+from middlewares.jwt_bearer import JWTBearer
 
 
-app = FastAPI()
+app = FastAPI()#(dependencies=[Depends(JWTBearer())])
 app.title = "Viajes"
 app.version = "0.0.1"
 app.add_middleware(ErrorHandler)
@@ -24,7 +25,8 @@ app.add_middleware(
     allow_headers=["*"],##habilito todos los headers que se puedan enviar desde un navegador.
 )
 
-app.include_router(user_router)
+
+app.include_router(userauth_router)
 app.include_router(usuarios_router)
 app.include_router(destinos_router)
 app.include_router(paquetes_router)

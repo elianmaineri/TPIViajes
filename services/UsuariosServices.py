@@ -1,7 +1,8 @@
 from models.Usuarios import Usuarios as UsuariosModel
 from schemas.UsuariosSchemas import Usuarios
+from passlib.context import CryptContext
 
-
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class UsuariosServices():
 
     def __init__(self, db) -> None:
@@ -20,10 +21,12 @@ class UsuariosServices():
         return usuarios
     
     def create_usuarios(self, usuario: Usuarios):
-        new_usuario = UsuariosModel(**usuario.dict())
+        contrasenia_hasheada = pwd_context.hash(usuario.password)
+        usuario.password = contrasenia_hasheada
+        new_usuario = UsuariosModel(**usuario.dict())        
         self.db.add(new_usuario)
         self.db.commit()
-        return
+        return new_usuario
     
     def update_usuarios(self, id: int, data: Usuarios):
         usuario = self.db.query(UsuariosModel).filter(UsuariosModel.id == id).first()

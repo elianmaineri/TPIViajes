@@ -9,9 +9,11 @@ from fastapi.encoders import jsonable_encoder
 from middlewares.jwt_bearer import JWTBearer
 from services.UsuariosServices import UsuariosServices
 from schemas.UsuariosSchemas import Usuarios
+from passlib.context import CryptContext
+from utils.jwt_manager import create_token
+
 
 usuarios_router = APIRouter()
-
 
 @usuarios_router.get('/ALL-USUARIOS', tags=['Usuarios'], dependencies=[Depends(JWTBearer())])
 def get_all_usuarios():
@@ -32,7 +34,7 @@ def get_id_usuarios(id: int):
 @usuarios_router.get('/EMAIL-USUARIOS', tags=['Usuarios'])
 def get_email_usuarios(email: str):
     db = Session()
-    usuarios = UsuariosServices(db).get_id_usuarios(email)
+    usuarios = UsuariosServices(db).get_email_usuarios(email)
     if not usuarios:
         return JSONResponse(status_code=404, content={"message": "No se encontro ningun usuario con ese email"})
     return JSONResponse(status_code=200, content=jsonable_encoder(usuarios))

@@ -9,5 +9,5 @@ class Usuarios(Base):
     id = Column(Integer, primary_key = True)
     nombre = Column(String(20))
     email = Column(String(50))
-    password = Column(String(50))
+    password = Column(String(300))
     rol = Column(String(25))
