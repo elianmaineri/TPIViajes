@@ -23,6 +23,7 @@ class ReservasDeViajeServices():
     
     def update_reservas(self, id: int, data: ReservasDeViajeSchema):
         reserva = self.db.query(ReservasDeViajeModel).filter(ReservasDeViajeModel.id == id).first()
+        reserva.id = data.id
         reserva.usuarioId = data.usuarioId
         reserva.paqueteId = data.paqueteId
         reserva.fecha_reserva = data.fecha_reserva

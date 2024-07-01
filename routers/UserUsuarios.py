@@ -52,13 +52,15 @@ def update_usuarios(id: int, usuario: Usuarios):
     db = Session()
     usuarios = UsuariosServices(db).update_usuarios(id, usuario)
     if not usuarios:
-        return JSONResponse(status_code=500, content={"message": "Usuario no modificado"})
-    return JSONResponse(status_code=200, content={"message": "Usuario modificado con exito"})
+        return JSONResponse(status_code=200, content={"message": "Usuario modificado con exito"})
+    return JSONResponse(status_code=500, content={"message": "Usuario no modificado"})
+
 
 @usuarios_router.delete('/USUARIOS', tags=['Usuarios'], response_model=Usuarios, status_code=200, dependencies=[Depends(JWTBearer())])
 def delete_usuarios(id: int):
     db = Session()
     usuarios = UsuariosServices(db).delete_usuarios(id)
     if not usuarios:
-        return JSONResponse(status_code=500, content={"message": "Usuario no eliminado"})
-    return JSONResponse(status_code=200, content={"message": "Usuario eliminado con exito"})
+        return JSONResponse(status_code=200, content={"message": "Usuario eliminado con exito"})
+    return JSONResponse(status_code=500, content={"message": "Usuario no eliminado"})
+

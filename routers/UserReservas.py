@@ -28,28 +28,30 @@ def get_act_reservas(id: int):
         return JSONResponse(status_code=404, content={"message": "No se encontro ninguna reserva activa con ese id"})
     return JSONResponse(status_code=200, content=jsonable_encoder(reservas))
 
-@reservas_router.post('/RESERVAS', tags=['Reservas'], response_model=ReservasDeViajeSchema, status_code=200, dependencies=[Depends(JWTBearer())])
+@reservas_router.post('/RESERVAS', tags=['Reservas'], response_model=ReservasDeViajeSchema, status_code=200)
 def create_reservas(reserva: ReservasDeViajeSchema):
     db = Session()
     reservas = ReservasDeViajeServices(db).create_reservas(reserva)
     if not reservas:
-        return JSONResponse(status_code=404, content={"message": "Reserva no creada"})
-    return JSONResponse(status_code=200, content={"message": "Reserva creada con exito"})
+        return JSONResponse(status_code=200, content={"message": "Reserva creada con exito"})
+    return JSONResponse(status_code=500, content={"message": "Reserva no creada"})
 
 @reservas_router.put('/RESERVAS', tags=['Reservas'], response_model=ReservasDeViajeSchema, status_code=200, dependencies=[Depends(JWTBearer())])
 def update_reservas(id: int, reserva: ReservasDeViajeSchema):
-    db = Session
+    db = Session()
     mod_reserva = ReservasDeViajeServices(db).update_reservas(id, reserva)
     if not mod_reserva:
-        return JSONResponse(status_code=404, content={"message": "Reserva no modificada"})
-    return JSONResponse(status_code=200, content={"message": "Reserva  modificada con exito"})
+        return JSONResponse(status_code=200, content={"message": "Reserva modificada con exito"})
+    return JSONResponse(status_code=500, content={"message": "Reserva no modificada"})
+
 
 @reservas_router.delete('/RESERVAS', tags=['Reservas'], response_model=ReservasDeViajeSchema, status_code=200, dependencies=[Depends(JWTBearer())])
 def delete_reservas(id:int):
     db = Session()
     reserva = ReservasDeViajeServices(db).delete_reservas(id)
     if not reserva:
-        return JSONResponse(status_code=404, content={"message": "Reserva no eliminada"})
-    return JSONResponse(status_code=200, content={"message": "Reserva eliminada con exito"})
+        return JSONResponse(status_code=200, content={"message": "Reserva eliminada con exito"})
+    return JSONResponse(status_code=500, content={"message": "Reserva no eliminada"})
+
 
 

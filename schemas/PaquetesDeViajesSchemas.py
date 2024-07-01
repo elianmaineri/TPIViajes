@@ -8,7 +8,7 @@ class PaquetesDeViaje(BaseModel):
     destinoId: int
     nombre: str
     precio: float
-    cupo: str
+    cupo: int
     fecha_inicio: date
     fecha_fin: date
     
