@@ -16,6 +16,8 @@ destinos_router = APIRouter()
 def get_all_destinos() -> List[Destinos]:
     db = Session()
     destinos = DestinosServices(db).get_all_destinos()
+    if not destinos:
+        return JSONResponse(status_code=403, content={"message": "Primero debes logearte"})
     return JSONResponse(status_code=200, content=jsonable_encoder(destinos))
 
 @destinos_router.get('/NOMBRE-DESTINOS', tags=['Destinos'], response_model=Destinos, status_code=200, dependencies=[Depends(JWTBearer())])
@@ -44,7 +46,7 @@ def create_destinos(destino: Destinos):
     return JSONResponse(status_code=200, content={"message": "Destino creado con exito"})
 
 @destinos_router.put('/DESTINOS', tags=['Destinos'], response_model=Destinos, status_code=200)
-def update_destinos(id: int, destino):
+def update_destinos(id: int, destino: Destinos):
     db = Session()
     mod_destino = DestinosServices(db).update_destinos(destino)
     if not mod_destino:

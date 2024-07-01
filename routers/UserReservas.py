@@ -37,7 +37,7 @@ def create_reservas(reserva: ReservasDeViajeSchema):
     return JSONResponse(status_code=200, content={"message": "Reserva creada con exito"})
 
 @reservas_router.put('/RESERVAS', tags=['Reservas'])
-def update_reservas(id: int, reserva):
+def update_reservas(id: int, reserva: ReservasDeViajeSchema):
     db = Session
     mod_reserva = ReservasDeViajeServices(db).update_reservas(id, reserva)
     if not mod_reserva:
