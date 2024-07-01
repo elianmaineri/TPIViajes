@@ -13,7 +13,7 @@ from schemas.PaquetesDeViajesSchemas import PaquetesDeViaje
 paquetes_router = APIRouter()
 
 
-@paquetes_router.get('/ALL-PAQUETES', tags=['Paquetes'])
+@paquetes_router.get('/ALL-PAQUETES', tags=['Paquetes'], response_model=List[PaquetesDeViaje], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_all_paquetes():
     db = Session()
     paquetes = PaqueteDeViajesServices(db).get_all_paquetes()
@@ -21,7 +21,7 @@ def get_all_paquetes():
         return JSONResponse(status_code=404, content={"message": "Paquetes no encontrados"})
     return JSONResponse(status_code=200, content=jsonable_encoder(paquetes))
 
-@paquetes_router.get('/DESTINO-PAQUETE', tags=['Paquetes'], response_model=PaquetesDeViaje, status_code=200, dependencies=[Depends(JWTBearer())])
+@paquetes_router.get('/DESTINO-PAQUETE', tags=['Paquetes'], response_model=List[PaquetesDeViaje], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_destino_paquete(destino:str):
     db = Session()
     paquete = PaqueteDeViajesServices(db).get_destino_paqueteDeViaje(destino)
@@ -29,7 +29,7 @@ def get_destino_paquete(destino:str):
         return JSONResponse(status_code=404, content={"message": "Paquete de viaje con ese destino NO ENCONTRADO"})
     return JSONResponse(status_code=200, content=jsonable_encoder(paquete))
 
-@paquetes_router.post('/PAQUETES', tags=['Paquetes'])
+@paquetes_router.post('/PAQUETES', tags=['Paquetes'], response_model=PaquetesDeViaje, status_code=200, dependencies=[Depends(JWTBearer())])
 def create_paquetes(paquete: PaquetesDeViaje):
     db = Session()
     paquetes = PaqueteDeViajesServices(db).create_paquete(paquete)
@@ -37,7 +37,7 @@ def create_paquetes(paquete: PaquetesDeViaje):
         return JSONResponse(status_code=500, content={"message": "Paquete no creeado"})
     return JSONResponse(status_code=200, content={"message": "Paquete creado con exito"})
 
-@paquetes_router.put('/PAQUETES', tags=['Paquetes'])
+@paquetes_router.put('/PAQUETES', tags=['Paquetes'], response_model=PaquetesDeViaje, status_code=200, dependencies=[Depends(JWTBearer())])
 def update_paquetes(id: int, paquete):
     db = Session()
     paquetes = PaqueteDeViajesServices(db).update_paquete(id, paquete)
@@ -45,7 +45,7 @@ def update_paquetes(id: int, paquete):
         return JSONResponse(status_code=500, content={"message": "Paquete no modificado"})
     return JSONResponse(status_code=200, content={"message": "Paquete modificado con exito"})
 
-@paquetes_router.delete('/PAQUETES', tags=['Paquetes'])
+@paquetes_router.delete('/PAQUETES', tags=['Paquetes'], response_model=PaquetesDeViaje, status_code=200, dependencies=[Depends(JWTBearer())])
 def delete_paquetes(id:int):
     db = Session()
     paquetes = PaqueteDeViajesServices(db).delete_paquete(id)

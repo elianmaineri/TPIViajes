@@ -12,7 +12,7 @@ from schemas.ReservasDeViajeSchemas import ReservasDeViajeSchema
 
 reservas_router = APIRouter()
 
-@reservas_router.get('/ALL-RESERVAS', tags=['Reservas'])
+@reservas_router.get('/ALL-RESERVAS', tags=['Reservas'], response_model=List[ReservasDeViajeSchema], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_all_reservas():
     db = Session()
     reservas = ReservasDeViajeServices(db).get_all_reservas()
@@ -20,7 +20,7 @@ def get_all_reservas():
         return JSONResponse(status_code=404, content={"message": "No se encontro ninguna reserva"})
     return JSONResponse(status_code=200, content=jsonable_encoder(reservas))
 
-@reservas_router.get('/ACT-RESERVA', tags=['Reservas'])
+@reservas_router.get('/ACT-RESERVA', tags=['Reservas'], response_model=List[ReservasDeViajeSchema], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_act_reservas(id: int):
     db = Session()
     reservas = ReservasDeViajeServices(db).get_act_reservas(id)
@@ -28,7 +28,7 @@ def get_act_reservas(id: int):
         return JSONResponse(status_code=404, content={"message": "No se encontro ninguna reserva activa con ese id"})
     return JSONResponse(status_code=200, content=jsonable_encoder(reservas))
 
-@reservas_router.post('/RESERVAS', tags=['Reservas'])
+@reservas_router.post('/RESERVAS', tags=['Reservas'], response_model=ReservasDeViajeSchema, status_code=200, dependencies=[Depends(JWTBearer())])
 def create_reservas(reserva: ReservasDeViajeSchema):
     db = Session()
     reservas = ReservasDeViajeServices(db).create_reservas(reserva)
@@ -36,7 +36,7 @@ def create_reservas(reserva: ReservasDeViajeSchema):
         return JSONResponse(status_code=404, content={"message": "Reserva no creada"})
     return JSONResponse(status_code=200, content={"message": "Reserva creada con exito"})
 
-@reservas_router.put('/RESERVAS', tags=['Reservas'])
+@reservas_router.put('/RESERVAS', tags=['Reservas'], response_model=ReservasDeViajeSchema, status_code=200, dependencies=[Depends(JWTBearer())])
 def update_reservas(id: int, reserva: ReservasDeViajeSchema):
     db = Session
     mod_reserva = ReservasDeViajeServices(db).update_reservas(id, reserva)
@@ -44,7 +44,7 @@ def update_reservas(id: int, reserva: ReservasDeViajeSchema):
         return JSONResponse(status_code=404, content={"message": "Reserva no modificada"})
     return JSONResponse(status_code=200, content={"message": "Reserva  modificada con exito"})
 
-@reservas_router.delete('/RESERVAS', tags=['Reservas'])
+@reservas_router.delete('/RESERVAS', tags=['Reservas'], response_model=ReservasDeViajeSchema, status_code=200, dependencies=[Depends(JWTBearer())])
 def delete_reservas(id:int):
     db = Session()
     reserva = ReservasDeViajeServices(db).delete_reservas(id)

@@ -15,7 +15,7 @@ from utils.jwt_manager import create_token
 
 usuarios_router = APIRouter()
 
-@usuarios_router.get('/ALL-USUARIOS', tags=['Usuarios'], dependencies=[Depends(JWTBearer())])
+@usuarios_router.get('/ALL-USUARIOS', tags=['Usuarios'], response_model=List[Usuarios], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_all_usuarios():
     db = Session()
     usuarios = UsuariosServices(db).get_all_usuarios()
@@ -23,7 +23,7 @@ def get_all_usuarios():
         return JSONResponse(status_code=404, content={"message": "No se encontro ningun usuario"})
     return JSONResponse(status_code=200, content=jsonable_encoder(usuarios))
 
-@usuarios_router.get('/ID-USUARIOS', tags=['Usuarios'])
+@usuarios_router.get('/ID-USUARIOS', tags=['Usuarios'], response_model=List[Usuarios], status_code=200, dependencies=[Depends(JWTBearer())])
 def get_id_usuarios(id: int):
     db = Session()
     usuarios = UsuariosServices(db).get_id_usuarios(id)
@@ -31,7 +31,7 @@ def get_id_usuarios(id: int):
         return JSONResponse(status_code=404, content={"message": "No se encontro ningun usuario con ese id"})
     return JSONResponse(status_code=200, content=jsonable_encoder(usuarios))
 
-@usuarios_router.get('/EMAIL-USUARIOS', tags=['Usuarios'])
+@usuarios_router.get('/EMAIL-USUARIOS', tags=['Usuarios'], response_model=Usuarios, status_code=200, dependencies=[Depends(JWTBearer())])
 def get_email_usuarios(email: str):
     db = Session()
     usuarios = UsuariosServices(db).get_email_usuarios(email)
@@ -39,7 +39,7 @@ def get_email_usuarios(email: str):
         return JSONResponse(status_code=404, content={"message": "No se encontro ningun usuario con ese email"})
     return JSONResponse(status_code=200, content=jsonable_encoder(usuarios))
 
-@usuarios_router.post('/USUARIOS', tags=['Usuarios'])
+@usuarios_router.post('/USUARIOS', tags=['Usuarios'], response_model=Usuarios, status_code=200, dependencies=[Depends(JWTBearer())])
 def create_usuarios(usuario: Usuarios):
     db = Session()
     usuarios = UsuariosServices(db).create_usuarios(usuario)
@@ -47,7 +47,7 @@ def create_usuarios(usuario: Usuarios):
         return JSONResponse(status_code=500, content={"message": "Usuario no creado"})
     return JSONResponse(status_code=200, content={"message": "Usuario creado con exito"})
 
-@usuarios_router.put('/USUARIOS', tags=['Usuarios'])
+@usuarios_router.put('/USUARIOS', tags=['Usuarios'], response_model=Usuarios, status_code=200, dependencies=[Depends(JWTBearer())])
 def update_usuarios(id: int, usuario: Usuarios):
     db = Session()
     usuarios = UsuariosServices(db).update_usuarios(id, usuario)
@@ -55,7 +55,7 @@ def update_usuarios(id: int, usuario: Usuarios):
         return JSONResponse(status_code=500, content={"message": "Usuario no modificado"})
     return JSONResponse(status_code=200, content={"message": "Usuario modificado con exito"})
 
-@usuarios_router.delete('/USUARIOS', tags=['Usuarios'])
+@usuarios_router.delete('/USUARIOS', tags=['Usuarios'], response_model=Usuarios, status_code=200, dependencies=[Depends(JWTBearer())])
 def delete_usuarios(id: int):
     db = Session()
     usuarios = UsuariosServices(db).delete_usuarios(id)

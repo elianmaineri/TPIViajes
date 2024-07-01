@@ -37,7 +37,7 @@ def get_pais_destinos(pais:str):
     return JSONResponse(status_code=200, content=jsonable_encoder(destinos))
 
 
-@destinos_router.post('/DESTINOS', tags=['Destinos'], response_model=Destinos, status_code=200)
+@destinos_router.post('/DESTINOS', tags=['Destinos'], response_model=Destinos, status_code=200, dependencies=[Depends(JWTBearer())])
 def create_destinos(destino: Destinos):
     db = Session()
     new_destino = DestinosServices(db).create_destinos(destino)
@@ -45,7 +45,7 @@ def create_destinos(destino: Destinos):
         return JSONResponse(status_code=500, content={"message": "Destino no creado"})
     return JSONResponse(status_code=200, content={"message": "Destino creado con exito"})
 
-@destinos_router.put('/DESTINOS', tags=['Destinos'], response_model=Destinos, status_code=200)
+@destinos_router.put('/DESTINOS', tags=['Destinos'], response_model=Destinos, status_code=200, dependencies=[Depends(JWTBearer())])
 def update_destinos(id: int, destino: Destinos):
     db = Session()
     mod_destino = DestinosServices(db).update_destinos(destino)
@@ -53,7 +53,7 @@ def update_destinos(id: int, destino: Destinos):
         return JSONResponse(status_code=500, content={"message": "Destino no modificado"})
     return JSONResponse(status_code=200, content={"message": "Destino modificado con exito"})
 
-@destinos_router.delete('/DESTINOS', tags=['Destinos'], response_model=Destinos, status_code=200)
+@destinos_router.delete('/DESTINOS', tags=['Destinos'], response_model=Destinos, status_code=200, dependencies=[Depends(JWTBearer())])
 def delete_destinos(id: int):
     db = Session()
     del_destino = DestinosServices(db).delete_destinos(id)
